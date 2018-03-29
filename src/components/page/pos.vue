@@ -7,20 +7,20 @@
 					<el-tabs>
 						<el-tab-pane label="点餐">
 							<el-table :data='orderList' border style="width:100%;text-align:center;" show-summary stripe>
-							<el-table-column prop='name' label='商品' header-align="center"></el-table-column>
+							<el-table-column prop='goodsName' label='商品' header-align="center"></el-table-column>
 							<el-table-column prop='price' label='单价' header-align="center"></el-table-column>
 							<el-table-column prop='count' label='数量' header-align="center"></el-table-column>
 							<el-table-column prop='total' label='总价' header-align="center"></el-table-column>
 							<el-table-column prop='operator' label='操作' header-align="center">
 								<template slot-scope="scope">
 									<el-button type="primary" icon="el-icon-circle-plus" circle @click="addOrder(scope.row)"></el-button>
-									<el-button type="danger" icon="el-icon-delete" circle></el-button>
+									<el-button type="danger" icon="el-icon-delete" circle @click="deleteSingle(scope.row)"></el-button>
 								</template>
 							</el-table-column>
 						</el-table>
 						<br><br>
 						<el-button type="warning" >挂单</el-button>
-						<el-button type="danger" >删除</el-button>
+						<el-button type="danger" @click="deleteOrder">删除</el-button>
 						<el-button type="success" >结账</el-button>
 						</el-tab-pane>
 						<el-tab-pane label="挂单"></el-tab-pane>
@@ -32,7 +32,7 @@
 						<div class="title">畅销商品</div>
 						<div class="sellingList">
 							<ul>
-								<li v-for="goods in sellingGoodsList"><el-button type="primary" plain>{{goods.name}} {{goods.price}}</el-button></li>
+								<li v-for="goods in sellingGoodsList"><el-button type="primary" plain>{{goods.goodsName}} ￥{{goods.price}}元</el-button></li>
 							</ul>
 						</div>
 						<div class="cb"></div>
@@ -41,11 +41,11 @@
 						<el-tab-pane label="推荐">
 							<div class="intro">
 								<ul class="intro-food">
-									<li v-for="item in introList">
+									<li v-for="item in introList" @click="makeOrder(item)">
 										<div class="intro-card">
-											<img :src="item.img">
-											<div class="intro-name">{{item.name}}</div>
-											<div class="intro-price">{{item.price}}</div>
+											<img :src="item.goodsImg">
+											<div class="intro-name">{{item.goodsName}}</div>
+											<div class="intro-price">￥{{item.price}}元</div>
 										</div>
 									</li>
 								</ul>
@@ -54,7 +54,7 @@
 						<el-tab-pane label="汉堡">
 							<div class="hb">
 								<ul class="hb-food">
-									<li v-for="item in hb">
+									<li v-for="item in hb" @click="makeOrder(item)">
 										<div class="hb-card">
 											<img :src="item.goodsImg">
 											<div class="hb-name">{{item.goodsName}}</div>
@@ -67,7 +67,7 @@
 						<el-tab-pane label="小食">
 							<div class="xs">
 								<ul class="xs-food">
-									<li v-for="item in xs">
+									<li v-for="item in xs" @click="makeOrder(item)">
 										<div class="xs-card">
 											<img :src="item.goodsImg">
 											<div class="xs-name">{{item.goodsName}}</div>
@@ -80,7 +80,7 @@
 						<el-tab-pane label="饮料">
 							<div class="yl">
 								<ul class="yl-food">
-									<li v-for="item in yl">
+									<li v-for="item in yl" @click="makeOrder(item)">
 										<div class="yl-card">
 											<img :src="item.goodsImg">
 											<div class="yl-name">{{item.goodsName}}</div>
@@ -93,7 +93,7 @@
 						<el-tab-pane label="套餐">
 							<div class="tc">
 								<ul class="tc-food">
-									<li v-for="item in tc">
+									<li v-for="item in tc" @click="makeOrder(item)">
 										<div class="tc-card">
 											<img :src="item.goodsImg">
 											<div class="tc-name">{{item.goodsName}}</div>
@@ -119,22 +119,22 @@
 			return{
 				orderList:[
 					{
-						id:1,
-						name:'可乐',
+						goodsId:11,
+						goodsName:'可乐',
 						price:3,
 						count:2,
 						total:6
 					},
 					{
-						id:2,
-						name:'汉堡',
+						goodsId:12,
+						goodsName:'汉堡',
 						price:10,
 						count:1,
 						total:10
 					},
 					{
-						id:3,
-						name:'鸡翅',
+						goodsId:13,
+						goodsName:'鸡翅',
 						price:10,
 						count:2,
 						total:20
@@ -142,83 +142,83 @@
 				],
 				sellingGoodsList:[
 					{
-						id:1,
+						goodsId:11,
 						name:"可乐",
-						price:"￥3元"
+						price:3
 					},
 					{
-						id:2,
+						goodsId:12,
 						name:"汉堡",
-						price:"￥10元"
+						price:10
 					},
 					{
-						id:3,
+						goodsId:13,
 						name:"鸡翅",
-						price:"￥10元"
+						price:10
 					},
 					{
-						id:4,
+						goodsId:4,
 						name:"鸡米花",
-						price:"￥6元"
+						price:6
 					},
 					{
-						id:5,
+						goodsId:5,
 						name:"奶茶",
-						price:"￥5元"
+						price:5
 					},
 					{
-						id:6,
+						goodsId:6,
 						name:"上校鸡块",
-						price:"￥15元"
+						price:15
 					},
 					{
-						id:7,
+						goodsId:7,
 						name:"鸡肉卷",
-						price:"￥20元"
+						price:20
 					}
 				],
 				introList:[
 					{
-						id:1,
-						name:"可乐",
-						price:"￥3元",
-						img:'../static/food/kele.jpg'
+						goodsId:11,
+						goodsName:"可乐",
+						price:3,
+						goodsImg:'static/food/kele.jpg'
 					},
 					{
-						id:2,
-						name:"汉堡",
-						price:"￥10元",
-						img:'../static/food/hanbao.jpg'
+						goodsId:12,
+						goodsName:"汉堡",
+						price:10,
+						goodsImg:'static/food/hanbao.jpg'
 					},
 					{
-						id:3,
-						name:"鸡翅",
-						price:"￥10元",
-						img:'../static/food/jichi.jpg'
+						goodsId:13,
+						goodsName:"鸡翅",
+						price:10,
+						goodsImg:'static/food/jichi.jpg'
 					},
 					{
-						id:4,
-						name:"鸡米花",
-						price:"￥6元",
-						img:'../static/food/jimihua.jpg'
+						goodsId:4,
+						goodsName:"鸡米花",
+						price:6,
+						goodsImg:'static/food/jimihua.jpg'
 					},
 					{
-						id:5,
-						name:"奶茶",
-						price:"￥5元",
-						img:'../static/food/naicha.jpg'
+						goodsId:5,
+						goodsName:"奶茶",
+						price:5,
+						goodsImg:'static/food/naicha.jpg'
 					},
 					{
-						id:6,
-						name:"上校鸡块",
-						price:"￥15元",
-						img:'../static/food/sxjk.jpg'
+						goodsId:6,
+						goodsName:"上校鸡块",
+						price:15,
+						goodsImg:'static/food/sxjk.jpg'
 					},
 					{
-						id:7,
-						name:"鸡肉卷",
-						price:"￥20元",
-						img:'../static/food/jrj.jpg'
+						goodsId:7,
+						goodsName:"鸡肉卷",
+						price:20,
+						goodsImg:'static/food/jrj.jpg'
 					}
 				],
 				hb:[],
@@ -247,6 +247,44 @@
 		methods:{
 			addOrder(goods){
 				goods.count ++ ;
+			},
+			makeOrder(item){
+				if(this.orderExsist(item))			//如果同类型订单存在则count直接+1
+				{
+					for(let i in this.orderList)
+					{
+						if(this.orderList[i].goodsId == item.goodsId)
+						{
+							this.orderList[i].count++;
+						}
+					}
+				}
+				else
+				{
+					let new_order = {
+						goodsId:item.goodsId,
+						goodsName:item.goodsName,
+						price:item.price,
+						count:1
+					};
+					this.orderList.push(new_order);
+				}
+			},
+			orderExsist(newOrder){					//判断同类型订单是否存在
+				for(let i in this.orderList)
+				{
+					if(this.orderList[i].goodsId == newOrder.goodsId)
+					{
+						return true;
+					}
+				}
+				return false;
+			},
+			deleteSingle(goods){
+				this.orderList = this.orderList.filter(o => o.goodsId != goods.goodsId);		//filter: o:数组中每个元素      满足条件返回,不满足过滤
+			},
+			deleteOrder(){
+				this.orderList = [];
 			}
 		},
 		watch:{

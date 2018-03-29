@@ -143,37 +143,37 @@
 				sellingGoodsList:[
 					{
 						goodsId:11,
-						name:"可乐",
+						goodsName:"可乐",
 						price:3
 					},
 					{
 						goodsId:12,
-						name:"汉堡",
+						goodsName:"汉堡",
 						price:10
 					},
 					{
 						goodsId:13,
-						name:"鸡翅",
+						goodsName:"鸡翅",
 						price:10
 					},
 					{
 						goodsId:4,
-						name:"鸡米花",
+						goodsName:"鸡米花",
 						price:6
 					},
 					{
 						goodsId:5,
-						name:"奶茶",
+						goodsName:"奶茶",
 						price:5
 					},
 					{
 						goodsId:6,
-						name:"上校鸡块",
+						goodsName:"上校鸡块",
 						price:15
 					},
 					{
 						goodsId:7,
-						name:"鸡肉卷",
+						goodsName:"鸡肉卷",
 						price:20
 					}
 				],
